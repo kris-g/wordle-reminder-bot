@@ -1,7 +1,14 @@
 image: node:14.19.0
 
+variables:
+  # docker build vars
+  DOCKER_DRIVER: overlay2
+  BUILDX_VERSION: "v0.7.1"
+  BUILDX_ARCH: "linux-amd64"
+
 stages:
   - build
+  - publish
 
 install_dependencies:
   stage: build
@@ -14,3 +21,26 @@ cache:
       - package-lock.json
   paths:
     - node_modules/
+
+services:
+  - name: docker:19.03.12-dind
+
+publish:
+  stage: publish
+  image: docker:19.03.12
+  before_script:
+    - wget -O /usr/bin/docker-buildx
+      https://github.com/docker/buildx/releases/download/${BUILDX_VERSION}/buildx-${BUILDX_VERSION}.${BUILDX_ARCH}
+    - chmod +x /usr/bin/docker-buildx
+    - docker-buildx version
+    - docker info
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+
+  script:
+    - docker-buildx create --use
+    - docker-buildx build
+      --platform linux/amd64,linux/arm64/v8
+      -t ${CI_REGISTRY_IMAGE}:latest
+      -f ./Dockerfile
+      --push
+      .
