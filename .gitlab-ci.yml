@@ -1,0 +1,16 @@
+image: node:14.19.0
+
+stages:
+  - build
+
+install_dependencies:
+  stage: build
+  script: 
+    - npm install
+
+cache:
+  key:
+    files:
+      - package-lock.json
+  paths:
+    - node_modules/
