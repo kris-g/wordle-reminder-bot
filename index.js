@@ -1,5 +1,6 @@
 const assert = require('assert').strict
 var cron = require('node-cron');
+require('log-timestamp');
 const TelegramBot = require('node-telegram-bot-api');
 
 const token = process.env.TOKEN;
