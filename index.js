@@ -44,7 +44,7 @@ new CronJob(
 	true,
 	'Europe/London',
   null,
-  notifyOnStartup // notify on startup if flag set
+  false
 );
 
 async function processReminder() {
