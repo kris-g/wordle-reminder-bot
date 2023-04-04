@@ -36,12 +36,23 @@ bot.onText(/Wordle \d{3}/, (msg) => {
   bot.sendMessage(groupChatId, 'Well done! Reminders will resume tomorrow.', { reply_to_message_id: msg.id });
 });
 
-cron.schedule('0 0,12-23 * * *', () => {
+// “At minute 0 past hour 0 and every hour from 12 through 23.”
+new CronJob(
+	'0 0,12-23 * * *',
+	() => processReminder(),
+	null,
+	true,
+	'Europe/London',
+  null,
+  notifyOnStartup // notify on startup if flag set
+);
+
+async function processReminder() {
   if (lastDatePlayed !== getDate()) {
     bot.sendMessage(groupChatId, 'Reminder! Confirm your Wordle score for today.', { reply_markup: { inline_keyboard: [[ { text: 'Snooze For Today', callback_data: 'snooze' } ]] } });
     console.log('Reminder sent');
   }
-});
+};
 
 function getDate() {
   const now = new Date();
