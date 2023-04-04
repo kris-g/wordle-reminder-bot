@@ -1,7 +1,7 @@
 const assert = require('assert').strict
-var cron = require('node-cron');
 require('log-timestamp');
 const TelegramBot = require('node-telegram-bot-api');
+const CronJob = require("cron").CronJob;
 
 const token = process.env.TOKEN;
 const groupChatId = process.env.CHAT_ID;
