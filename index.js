@@ -55,6 +55,6 @@ async function processReminder() {
 };
 
 function getDate() {
-  const now = new Date(new Date().toLocaleString('en-GB', { timeZone: 'Europe/London' }));
+  const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/London' }));
   return `${now.getFullYear()}-${(now.getMonth() + 1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')}`;
 }
