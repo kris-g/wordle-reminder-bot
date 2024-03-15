@@ -25,7 +25,7 @@ bot.on('callback_query', cq => {
   }
 });
 
-bot.onText(/Wordle \d{3}/, (msg) => {
+bot.onText(/Wordle (\d{1},)?\d{3}/, (msg) => {
   if (msg.chat.id != groupChatId) {
     console.log(`Received matching message on unexpected chat [ChatId: ${msg.chat.id}]`);
     return;
